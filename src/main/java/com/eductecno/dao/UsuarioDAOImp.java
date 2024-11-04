@@ -3,11 +3,8 @@ package com.eductecno.dao;
 import com.eductecno.modelo.Usuario;
 import com.eductecno.procesaconexion.ConexionBD;
 
+import java.sql.*;
 import java.util.List;
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.Optional;
 
@@ -45,16 +42,21 @@ public class UsuarioDAOImp implements IDAO{
 
     @Override
     public Boolean agregar(Usuario u) {
-        String sql = "INSERT INTO usuarios (nombre, username, email, fecha_nacimiento, password, animal) VALUES('"
-                + u.getNombre() + "','"
-                + u.getUserName() + "','"
-                + u.getEmail() + "','"
-                + new java.sql.Date(u.getFechaNacimiento().getTime()) + "','"
-                + u.getPassword() + "','"
-                + u.getAnimal() + "');";
-        try (Statement st = conectar().createStatement()) {
-            st.execute(sql);
-            return true;
+        String sql = "INSERT INTO usuarios (nombre, username, email, fecha_nacimiento, password, animal) VALUES (?, ?, ?, ?, ?, ?)";
+
+        try (Connection conn = conectar();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+            stmt.setString(1, u.getNombre());
+            stmt.setString(2, u.getUserName());
+            stmt.setString(3, u.getEmail());
+            stmt.setDate(4, new java.sql.Date(u.getFechaNacimiento().getTime()));
+            stmt.setString(5, u.getPassword());
+            stmt.setString(6, u.getAnimal());
+
+            int filasInsertadas = stmt.executeUpdate();
+            return filasInsertadas > 0;
+
         } catch (ClassNotFoundException | SQLException e) {
             e.printStackTrace();
             return false;

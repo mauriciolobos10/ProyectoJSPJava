@@ -11,11 +11,8 @@ public class ConexionBD {
     private static String clave = "root";
 
     public static Connection getInstance() throws SQLException, ClassNotFoundException{
-        if(c == null){
-            Class.forName("com.mysql.cj.jdbc.Driver");
-            c = DriverManager.getConnection(url,usuario,clave);
-        }
-        return c;
+        Class.forName("com.mysql.cj.jdbc.Driver");
+        return DriverManager.getConnection(url,usuario,clave);
     }
 
 }

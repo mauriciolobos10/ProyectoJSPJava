@@ -28,8 +28,6 @@ public class IniciaSesionServlet extends HttpServlet {
 
         String sql = "SELECT * FROM usuarios WHERE USERNAME = ? AND PASSWORD = ?";
 
-        System.out.println("user: "+ u);
-        System.out.println("pass: "+ c);
         try (Connection conn = ConexionBD.getInstance();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
 
@@ -38,9 +36,17 @@ public class IniciaSesionServlet extends HttpServlet {
 
             try (ResultSet rs = stmt.executeQuery()) {
                 if (rs.next()) {
+                    Usuario usuario = new Usuario();
+                    usuario.setNombre(rs.getString("nombre"));
+                    usuario.setUserName(rs.getString("username"));
+                    usuario.setEmail(rs.getString("email"));
+                    usuario.setFechaNacimiento(rs.getDate("fecha_nacimiento"));
+                    usuario.setPassword(rs.getString("password")); // Evita almacenar la contraseña en producción
+
 
                     HttpSession session = req.getSession();
-                    session.setAttribute("usuario", rs.getString("username"));
+//                    session.setAttribute("usuario", rs.getString("username"));
+                    session.setAttribute("usuario", usuario);
                     resp.sendRedirect(req.getContextPath() + "/menuPrincipal.jsp");
                 } else {
                     resp.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Usuario o contraseña incorrectos.");

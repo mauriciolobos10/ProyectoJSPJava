@@ -20,6 +20,9 @@ public class Usuario {
         this.password = password;
         this.animal = animal;
     }
+    public Usuario(){
+
+    }
 
     public int getId() {
         return id;
