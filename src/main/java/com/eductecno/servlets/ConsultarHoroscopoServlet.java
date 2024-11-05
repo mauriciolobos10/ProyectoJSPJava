@@ -41,8 +41,12 @@ public class ConsultarHoroscopoServlet extends HttpServlet {
             }
         }
 
-        session.setAttribute("animal", signo);
+        if (signo == null) {
+            request.getSession().setAttribute("mensaje", "No se pudo encontrar tu animal del horóscopo.");
+            response.sendRedirect("login.jsp");
+        }
 
+        session.setAttribute("animal", signo);
         response.sendRedirect("conoceAnimal.jsp");
     }
 }

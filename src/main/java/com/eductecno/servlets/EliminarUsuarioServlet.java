@@ -33,7 +33,6 @@ public class EliminarUsuarioServlet extends HttpServlet {
                 boolean exitoEliminacion = usuarioDAO.eliminar(usuarioId);
 
                 if (exitoEliminacion) {
-
                     session.invalidate();
                     request.getSession().setAttribute("mensaje", "Cuenta eliminada correctamente.");
                     response.sendRedirect("login.jsp");

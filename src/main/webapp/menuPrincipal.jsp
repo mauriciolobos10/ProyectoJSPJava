@@ -1,12 +1,13 @@
 <%@ page import="com.eductecno.modelo.Usuario" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%
+
     String mensaje = (String) session.getAttribute("mensaje");
     if (mensaje != null) {
         session.removeAttribute("mensaje");
     }
-    Usuario usuarioObj = (Usuario) session.getAttribute("usuario");
 
+    Usuario usuarioObj = (Usuario) session.getAttribute("usuario");
     String usuario  = (usuarioObj != null) ? usuarioObj.getUserName() : null;
     if (usuario == null) {
         response.sendRedirect("login.jsp");
@@ -73,10 +74,6 @@
         </div>
     </div>
 </div>
-
-
-<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"></script>
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 
 <script>
     $(document).ready(function() {
