@@ -3,7 +3,7 @@ package com.eductecno.modelo;
 import java.util.Date;
 
 public class Usuario {
-    private int id;
+    private Long id;
     private String nombre;
     private String userName;
     private String email;
@@ -11,7 +11,7 @@ public class Usuario {
     private String password;
     private String animal;
 
-    public Usuario(int id, String nombre, String username, String email, Date fechaNacimiento, String password, String animal) {
+    public Usuario(Long id, String nombre, String username, String email, Date fechaNacimiento, String password, String animal) {
         this.id = id;
         this.nombre = nombre;
         this.userName = username;
@@ -24,11 +24,11 @@ public class Usuario {
 
     }
 
-    public int getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Long id) {
         this.id = id;
     }
 

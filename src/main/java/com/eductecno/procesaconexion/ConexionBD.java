@@ -6,7 +6,7 @@ import java.sql.SQLException;
 
 public class ConexionBD {
     private static Connection c;
-    private static String url = "jdbc:mysql://localhost:3306/modulo5_horoscopo?serverTimezone=America/Santiago";;
+    private static String url = "jdbc:mysql://localhost:3306/modulo5_horoscopo?serverTimezone=America/Santiago";
     private static String usuario = "root";
     private static String clave = "root";
 

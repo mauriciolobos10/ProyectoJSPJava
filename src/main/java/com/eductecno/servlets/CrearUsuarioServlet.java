@@ -40,6 +40,7 @@ public class CrearUsuarioServlet extends HttpServlet {
         boolean registroExitoso = usuarioDAO.agregar(nuevoUsuario);
 
         if (registroExitoso) {
+            request.getSession().setAttribute("mensaje", "Registro realizado correctamente.");
             response.sendRedirect("login.jsp");
         } else {
             request.setAttribute("error", "No se pudo registrar el usuario. Inténtalo de nuevo.");

@@ -37,6 +37,7 @@ public class IniciaSesionServlet extends HttpServlet {
             try (ResultSet rs = stmt.executeQuery()) {
                 if (rs.next()) {
                     Usuario usuario = new Usuario();
+                    usuario.setId(rs.getLong("id"));
                     usuario.setNombre(rs.getString("nombre"));
                     usuario.setUserName(rs.getString("username"));
                     usuario.setEmail(rs.getString("email"));
@@ -49,11 +50,33 @@ public class IniciaSesionServlet extends HttpServlet {
                     session.setAttribute("usuario", usuario);
                     resp.sendRedirect(req.getContextPath() + "/menuPrincipal.jsp");
                 } else {
-                    resp.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Usuario o contraseña incorrectos.");
+                    if(compruebaSiExisteUsername(u)){
+                        req.getSession().setAttribute("mensaje", "Contraseña incorrecta.");
+                    }else{
+                        req.getSession().setAttribute("mensaje", "Usuario no existe, debe registrarse.");
+                    }
+//                    req.getSession().setAttribute("mensaje", "Usuario o contraseña incorrectos.");
+//                    resp.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Usuario o contraseña incorrectos.");
+                    resp.sendRedirect("login.jsp");
                 }
             }
         } catch (SQLException | ClassNotFoundException e) {
             resp.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Error en MySQL: " + e.getMessage());
         }
+    }
+
+    private boolean compruebaSiExisteUsername(String username) throws SQLException, ClassNotFoundException {
+        String sql = "SELECT * FROM usuarios WHERE USERNAME = ?";
+
+        try (Connection conn = ConexionBD.getInstance();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setString(1, username);
+            try (ResultSet rs = stmt.executeQuery()) {
+                if (rs.next()) {
+                    return true;
+                }
+            }
+        }
+        return false;
     }
 }

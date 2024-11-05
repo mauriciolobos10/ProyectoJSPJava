@@ -1,29 +1,22 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<% String error = (String) request.getAttribute("error"); %>
+<% if (error != null) { %>
+<div class="alert alert-danger" role="alert">
+    <%= error %>
+</div>
+<% } %>
 <html>
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Registrarse</title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-    <style>
-        .navbar {
-            background-color: #17a2b8;
-        }
-        .navbar-brand, .navbar-nav .nav-link {
-            color: #fff !important;
-        }
-        .btn-custom {
-            background-color: #17a2b8;
-            color: white;
-        }
-    </style>
+    <link rel="stylesheet" href="css/styles.css">
 </head>
 <body>
 <nav class="navbar navbar-expand-lg navbar-dark">
-    <a class="navbar-brand" href="#">Horóscopo Chino</a>
-    <div class="navbar-nav ml-auto">
-        <span class="nav-link">Tu Horóscopo Chino</span>
-    </div>
+    <a class="navbar-brand" href="menuPrincipal.jsp">Horóscopo Chino</a>
+    <span class="nav-link">Tu Horóscopo Chino</span>
 </nav>
 
 <div class="container mt-5">
@@ -64,7 +57,6 @@
 <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-
 
 </body>
 </html>

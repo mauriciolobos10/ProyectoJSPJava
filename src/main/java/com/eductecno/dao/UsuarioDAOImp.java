@@ -24,7 +24,7 @@ public class UsuarioDAOImp implements IDAO{
              ResultSet rs = st.executeQuery("SELECT * FROM usuarios WHERE id = " + id + ";")) {
             if (rs.next()) {
                 Usuario usuario = new Usuario(
-                        rs.getInt("id"),
+                        rs.getLong("id"),
                         rs.getString("nombre"),
                         rs.getString("username"),
                         rs.getString("email"),
@@ -73,5 +73,57 @@ public class UsuarioDAOImp implements IDAO{
             e.printStackTrace();
             return false;
         }
+    }
+    public boolean modificar(Usuario u) {
+        String sql = "UPDATE usuarios SET nombre = ?, email = ?, username = ?, fecha_nacimiento = ?" +
+                (u.getPassword() != null && !u.getPassword().isEmpty() ? ", password = ?" : "") +
+                " WHERE id = ?";
+
+        try (Connection conn = ConexionBD.getInstance();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+            stmt.setString(1, u.getNombre());
+            stmt.setString(2, u.getEmail());
+            stmt.setString(3, u.getUserName());
+            stmt.setDate(4, new java.sql.Date(u.getFechaNacimiento().getTime()));
+
+            int parameterIndex = 5;
+            if (u.getPassword() != null && !u.getPassword().isEmpty()) {
+                stmt.setString(parameterIndex++, u.getPassword());
+            }
+
+            stmt.setLong(parameterIndex, u.getId());
+
+            int filasActualizadas = stmt.executeUpdate();
+            return filasActualizadas > 0;
+
+        } catch (SQLException | ClassNotFoundException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+    public Optional<Usuario> buscarPorNombre(String nombre) {
+        String sql = "SELECT * FROM usuarios WHERE nombre = ?";
+
+        try (Connection conn = ConexionBD.getInstance();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+            stmt.setString(1, nombre);
+            ResultSet rs = stmt.executeQuery();
+
+            if (rs.next()) {
+                Usuario usuario = new Usuario();
+                usuario.setId(rs.getLong("id"));
+                usuario.setNombre(rs.getString("nombre"));
+                usuario.setUserName(rs.getString("username"));
+                usuario.setFechaNacimiento(rs.getDate("fecha_nacimiento"));
+                usuario.setEmail(rs.getString("email"));
+                return Optional.of(usuario);
+            }
+        } catch (SQLException | ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+
+        return Optional.empty(); // Retorna vacío si no encuentra al usuario
     }
 }

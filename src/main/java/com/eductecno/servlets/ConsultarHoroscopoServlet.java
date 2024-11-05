@@ -22,20 +22,16 @@ public class ConsultarHoroscopoServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         HttpSession session = request.getSession();
 
-        // Obtener el usuario y su fecha de nacimiento
         Usuario usuario = (Usuario) session.getAttribute("usuario"); // Asegúrate de que 'usuario' esté en la sesión
         if (usuario == null) {
             response.sendRedirect("login.jsp");
             return;
         }
 
-        // Obtener la fecha de nacimiento del usuario
         Date fechaNacimiento = usuario.getFechaNacimiento();
 
-        // Obtener la lista de signos desde el DAO
         List<Horoscopo> listaHoroscopo = horoscopoDAO.obtenerHoroscopo();
 
-        // Buscar el signo correspondiente a la fecha de nacimiento
         String signo = null;
         for (Horoscopo h : listaHoroscopo) {
             if ((fechaNacimiento.after(h.getFechaInicio()) || fechaNacimiento.equals(h.getFechaInicio())) &&
@@ -45,10 +41,8 @@ public class ConsultarHoroscopoServlet extends HttpServlet {
             }
         }
 
-        // Guardar el signo en la sesión para mostrarlo en la JSP
         session.setAttribute("animal", signo);
 
-        // Redirigir a la página JSP para mostrar el resultado
         response.sendRedirect("conoceAnimal.jsp");
     }
 }
